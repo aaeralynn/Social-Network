@@ -1,8 +1,13 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema, Types } = require("mongoose");
+const dateFormat = require("../utils/dateFormat");
 
+// Reaction Schema (used as subdocument in Thought)
 const reactionSchema = new Schema(
   {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+    },
     reactionBody: {
       type: String,
       required: true,
@@ -15,6 +20,7 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
+      get: (timestamp) => dateFormat(timestamp),
     },
   },
   {
@@ -25,4 +31,4 @@ const reactionSchema = new Schema(
   }
 );
 
-module.exports = reactionSchema; // Export the reaction schema for use in Thought model
+module.exports = reactionSchema;
