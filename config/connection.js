@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 
-// MongoDB connection string
-const connectionString =
-  "mongodb+srv://A3rb3ar:Aerbear2004!@bookquest-cluster.ctqb03h.mongodb.net/socialNetworkDB?retryWrites=true&w=majority&appName=bookquest-cluster";
+// Load environment variables from .env file
+require("dotenv").config();
+
+// MongoDB connection string from .env file
+const connectionString = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect(connectionString)
+  .connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
