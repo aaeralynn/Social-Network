@@ -7,7 +7,7 @@ module.exports = {
       const users = await User.find().select("-__v");
       res.json(users);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: "Failed to retrieve users", error: err });
     }
   },
 
@@ -25,7 +25,7 @@ module.exports = {
 
       res.json(user);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: "Error retrieving user", error: err });
     }
   },
 
@@ -35,7 +35,7 @@ module.exports = {
       const user = await User.create(req.body);
       res.status(201).json(user);
     } catch (err) {
-      res.status(400).json(err);
+      res.status(400).json({ message: "Error creating user", error: err });
     }
   },
 
@@ -53,7 +53,7 @@ module.exports = {
 
       res.json(user);
     } catch (err) {
-      res.status(400).json(err);
+      res.status(400).json({ message: "Error updating user", error: err });
     }
   },
 
@@ -71,7 +71,7 @@ module.exports = {
 
       res.json({ message: "User and their thoughts deleted" });
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: "Error deleting user", error: err });
     }
   },
 
@@ -88,9 +88,9 @@ module.exports = {
         return res.status(404).json({ message: "User not found" });
       }
 
-      res.json(user);
+      res.json({ message: "Friend added", user });
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: "Error adding friend", error: err });
     }
   },
 
@@ -107,9 +107,9 @@ module.exports = {
         return res.status(404).json({ message: "User not found" });
       }
 
-      res.json(user);
+      res.json({ message: "Friend removed", user });
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ message: "Error removing friend", error: err });
     }
   },
 };

@@ -1,7 +1,7 @@
 const { Schema, Types } = require("mongoose");
 const dateFormat = require("../utils/dateFormat");
 
-// Reaction Schema (used as subdocument in Thought)
+// Reaction Schema (used as a subdocument in Thought)
 const reactionSchema = new Schema(
   {
     reactionId: {
