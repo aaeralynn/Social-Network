@@ -9,17 +9,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Debug log to track incoming requests
-app.use((req, res, next) => {
-  console.log(`🔍 Incoming request: ${req.method} ${req.url}`);
-  next();
-});
-
-// Test route (optional, but good for sanity check)
-app.get("/test", (req, res) => {
-  res.send("✅ Test route works!");
-});
-
 // Mount API routes
 app.use("/api", routes);
 
