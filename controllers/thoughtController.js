@@ -5,19 +5,35 @@ const createThought = async (req, res) => {
   try {
     const { thoughtText, username, userId } = req.body;
 
+    // Log the request body for debugging
+    console.log("Request body:", req.body);
+
+    // Ensure the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create the new thought and catch validation errors if any
     const thought = await Thought.create({
       thoughtText,
       username,
+    }).catch((err) => {
+      console.error("Mongoose validation error:", err);
+      throw err;
     });
 
-    // Add thought to user's thoughts array
+    // Add the thought to the user's thoughts array
     await User.findByIdAndUpdate(userId, {
       $push: { thoughts: thought._id },
     });
 
     res.status(201).json(thought);
   } catch (err) {
-    res.status(500).json({ message: "Failed to create thought", error: err });
+    console.error("Error details:", err); // Log the full error details
+    res
+      .status(500)
+      .json({ message: "Failed to create thought", error: err.message });
   }
 };
 
@@ -32,7 +48,9 @@ const getThoughtById = async (req, res) => {
 
     res.status(200).json(thought);
   } catch (err) {
-    res.status(500).json({ message: "Failed to get thought", error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to get thought", error: err.message });
   }
 };
 
@@ -51,7 +69,9 @@ const updateThought = async (req, res) => {
 
     res.status(200).json(thought);
   } catch (err) {
-    res.status(500).json({ message: "Failed to update thought", error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to update thought", error: err.message });
   }
 };
 
@@ -74,7 +94,9 @@ const deleteThought = async (req, res) => {
       .status(200)
       .json({ message: "Thought and associated reactions deleted" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to delete thought", error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to delete thought", error: err.message });
   }
 };
 
@@ -93,7 +115,9 @@ const addReaction = async (req, res) => {
 
     res.status(200).json(thought);
   } catch (err) {
-    res.status(500).json({ message: "Failed to add reaction", error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to add reaction", error: err.message });
   }
 };
 
@@ -112,7 +136,9 @@ const removeReaction = async (req, res) => {
 
     res.status(200).json(thought);
   } catch (err) {
-    res.status(500).json({ message: "Failed to remove reaction", error: err });
+    res
+      .status(500)
+      .json({ message: "Failed to remove reaction", error: err.message });
   }
 };
 
