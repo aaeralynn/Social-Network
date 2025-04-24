@@ -103,3 +103,6 @@ npm install
 
 ### 3. Start the Server
 npm run start
+
+### Walkthrough Video
+https://youtu.be/H3sxXFuIWus
