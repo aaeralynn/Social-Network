@@ -6,7 +6,6 @@ const {
   deleteThought,
 } = require("../../controllers/thoughtController");
 
-// /api/thoughts
 router
   .route("/")
   .post(createThought) // Create a new thought
@@ -14,7 +13,6 @@ router
     res.send("GET all thoughts endpoint is not yet implemented")
   );
 
-// /api/thoughts/:thoughtId
 router
   .route("/:thoughtId")
   .get(getThoughtById) // Get a single thought by its _id
