@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const reactionSchema = require("./Reaction");
 const dateFormat = require("../utils/dateFormat");
 
-// Thought Schema
+// Schema for user thoughts
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -20,7 +20,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
-    reactions: [reactionSchema],
+    reactions: [reactionSchema], // Array of nested reaction subdocuments
   },
   {
     toJSON: {
@@ -31,9 +31,9 @@ const thoughtSchema = new Schema(
   }
 );
 
-// Virtual to get reaction count
+// Virtual property to get the number of reactions
 thoughtSchema.virtual("reactionCount").get(function () {
-  return this.reactions.length;
+  return this.reactions?.length || 0;
 });
 
 const Thought = model("Thought", thoughtSchema);
