@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const {
+  getThoughts,
+  getSingleThought,
   createThought,
-  getThoughtById,
   updateThought,
   deleteThought,
   addReaction,
@@ -9,17 +10,12 @@ const {
 } = require("../../controllers/thoughtController");
 
 // Route: /api/thoughts
-router
-  .route("/")
-  .post(createThought)
-  .get((req, res) =>
-    res.send("GET all thoughts endpoint is not yet implemented")
-  );
+router.route("/").get(getThoughts).post(createThought);
 
 // Route: /api/thoughts/:thoughtId
 router
   .route("/:thoughtId")
-  .get(getThoughtById)
+  .get(getSingleThought)
   .put(updateThought)
   .delete(deleteThought);
 
