@@ -1,20 +1,29 @@
 const { User, Thought } = require("../models");
 
+// Get all thoughts
+const getThoughts = async (req, res) => {
+  try {
+    const thoughts = await Thought.find().lean();
+    res.status(200).json(thoughts);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed to get thoughts", error: err.message });
+  }
+};
+
 // Create a new thought
 const createThought = async (req, res) => {
   try {
     const { thoughtText, username, userId } = req.body;
 
-    // Log the request body for debugging
     console.log("Request body:", req.body);
 
-    // Ensure the user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Create the new thought and catch validation errors if any
     const thought = await Thought.create({
       thoughtText,
       username,
@@ -23,14 +32,13 @@ const createThought = async (req, res) => {
       throw err;
     });
 
-    // Add the thought to the user's thoughts array
     await User.findByIdAndUpdate(userId, {
       $push: { thoughts: thought._id },
     });
 
     res.status(201).json(thought);
   } catch (err) {
-    console.error("Error details:", err); // Log the full error details
+    console.error("Error details:", err);
     res
       .status(500)
       .json({ message: "Failed to create thought", error: err.message });
@@ -84,7 +92,6 @@ const deleteThought = async (req, res) => {
       return res.status(404).json({ message: "No thought found with that ID" });
     }
 
-    // Remove thought from user's thoughts array
     await User.findOneAndUpdate(
       { thoughts: thought._id },
       { $pull: { thoughts: thought._id } }
@@ -143,6 +150,7 @@ const removeReaction = async (req, res) => {
 };
 
 module.exports = {
+  getThoughts, // ✅ ADDED EXPORT
   createThought,
   getThoughtById,
   updateThought,
